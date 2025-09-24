@@ -1,0 +1,11 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace NWRestfulAPI.Models;
+
+public partial class CustomerDemographic
+{
+    public string CustomerTypeId { get; set; } = null!;
+
+    public string? CustomerDesc { get; set; }
+}
