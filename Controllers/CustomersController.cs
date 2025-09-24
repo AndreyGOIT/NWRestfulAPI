@@ -15,21 +15,38 @@ namespace NWRestfulAPI.Controllers
         [HttpGet]
         public ActionResult GetAllCustomers()
         {
-            var asiakkaat = db.Customers.ToList();
-            return Ok(asiakkaat );
+            try 
+            {
+                var asiakkaat = db.Customers.ToList();
+                return Ok(asiakkaat );
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Tapahtui virhe. Lue lisää: " + ex.InnerException);
+            }
         }
 
         // Hakee asiakkaan ID:n peristeella
         [HttpGet]
         [Route("{id}")]
-        public ActionResult GetCustomers(string id) 
+        public ActionResult GetOneCustomerById(string id) 
         {
-            var customer = db.Customers.Find(id);
-            if (customer == null)
+            try
             {
-                return NoContent();
+                var customer = db.Customers.Find(id);
+                if (customer != null)
+                {
+                    return Ok(customer);
+                }
+                else
+                {
+                    return NotFound($"Asiakasta id:lla {id} ei loydy"); //string interpolation
+                }
             }
-            return Ok(customer);
+            catch (Exception ex)
+            {
+                return BadRequest("Tapahtui virhe. Lue lisää: " + ex.InnerException);
+            }
         }
 
         // Lisää uuden asiakkaan
