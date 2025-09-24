@@ -15,10 +15,10 @@ namespace NWRestfulAPI.Controllers
         [HttpGet]
         public ActionResult GetAllCustomers()
         {
-            try 
+            try
             {
                 var asiakkaat = db.Customers.ToList();
-                return Ok(asiakkaat );
+                return Ok(asiakkaat);
             }
             catch (Exception ex)
             {
@@ -26,10 +26,10 @@ namespace NWRestfulAPI.Controllers
             }
         }
 
-        // Hakee asiakkaan ID:n peristeella
+        // Hakee asiakkaan ID:n perusteella
         [HttpGet]
         [Route("{id}")]
-        public ActionResult GetOneCustomerById(string id) 
+        public ActionResult GetOneCustomerById(string id)
         {
             try
             {
@@ -58,13 +58,13 @@ namespace NWRestfulAPI.Controllers
                 db.Customers.Add(cust);
                 db.SaveChanges();
                 //return Created("Customer added: ", cust);
-                return Ok("Added new customer" + cust.CompanyName);
+                return Ok($"Added new customer {cust.CompanyName} from {cust.City}");
             }
             catch (Exception ex)
             {
                 return BadRequest("Tapahtui virhe. Lue lisää: " + ex.InnerException);
             }
-            
+
         }
 
         // Hakee asiakkaan nimen osalla
@@ -84,6 +84,31 @@ namespace NWRestfulAPI.Controllers
                 return NoContent();
             }
             return Ok(customers);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public ActionResult DeleteCustomer(string id)
+        {
+            try
+            {
+                var asiakas = db.Customers.Find(id);
+                if (asiakas != null) // jos id:lla löytyy asiakas
+                {
+                    db.Customers.Remove(asiakas);
+                    db.SaveChanges();
+                    return Ok($"Asiakas id:lla {id} poistettu");
+                }
+                else
+                {
+                    return NotFound($"Asiakasta id:lla {id} ei loydy");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Tapahtui virhe. Lue lisää: " + ex.InnerException);
+            }
+
         }
 
     }
