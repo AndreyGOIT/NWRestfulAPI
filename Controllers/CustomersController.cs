@@ -9,7 +9,8 @@ namespace NWRestfulAPI.Controllers
     public class CustomersController : ControllerBase
     {
         // Alustetaan tietokantayhteys
-        NorthwindOriginalContext db = new NorthwindOriginalContext();
+        //NorthwindOriginalContext db = new NorthwindOriginalContext();
+        NorthwindContext db = new NorthwindContext();
 
         // Hakee kaikki asiakkaat
         [HttpGet]
