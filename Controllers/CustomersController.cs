@@ -9,8 +9,17 @@ namespace NWRestfulAPI.Controllers
     public class CustomersController : ControllerBase
     {
         // Alustetaan tietokantayhteys
-        //NorthwindOriginalContext db = new NorthwindOriginalContext();
-        NorthwindContext db = new NorthwindContext();
+
+        // Perinteinen malli
+        //NorthwindContext db = new NorthwindContext();
+
+        // Dependency Injection malli
+        private NorthwindContext db;
+
+        public CustomersController(NorthwindContext dbparametri) // konstruktorissa
+        {
+            db = dbparametri; // saadaan tietokantayhteys
+        }
 
         // Hakee kaikki asiakkaat
         [HttpGet]
