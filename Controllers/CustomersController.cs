@@ -73,18 +73,26 @@ namespace NWRestfulAPI.Controllers
         [Route("company/{search}")]
         public ActionResult GetCustomerByName(string search)
         {
-            var customers = db.Customers
+            try {
+                var customers = db.Customers
                 .Where(c => c.CompanyName.Contains(search))
                 .ToList(); // <--- nimen osalla haku
 
-            // var customers = db.Customers.Where(c => c.CompanyName.StartsWith(search)).ToList(); // <--- nimen alulla haku
-            // var customers = db.Customers.Where(c => c.CompanyName == search)).ToList(); // <--- täydellinen mätsi
+                // var customers = db.Customers.Where(c => c.CompanyName.StartsWith(search)).ToList(); // <--- nimen alulla haku
+                // var customers = db.Customers.Where(c => c.CompanyName == search)).ToList(); // <--- täydellinen mätsi
 
-            if (customers.Count == 0)
-            {
-                return NoContent();
+                if (customers.Count == 0)
+                {
+                    return NoContent();
+                }
+                return Ok(customers);
+
             }
-            return Ok(customers);
+            catch (Exception ex)
+            {
+                return BadRequest("Tapahtui virhe. Lue lisää: " + ex.InnerException);
+            }
+            
         }
 
         [HttpDelete]
