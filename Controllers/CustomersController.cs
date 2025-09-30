@@ -95,6 +95,49 @@ namespace NWRestfulAPI.Controllers
             
         }
 
+        // Päivittää asiakkaan tiedot ID:n perusteella
+        [HttpPut]
+        [Route("{id}")]
+        public ActionResult UpdateCustomer(string id, [FromBody] Customer cust)
+        {
+            try
+            {
+                if (id != cust.CustomerId) // jos id ei täsmää
+                {
+                    return BadRequest("Id ei täsmää");
+                }
+
+                var asiakas = db.Customers.Find(id);
+
+                if (asiakas != null) // jos id:lla löytyy asiakas
+                {
+                    // päivitetään tiedot
+                    asiakas.CompanyName = cust.CompanyName;
+                    asiakas.ContactName = cust.ContactName;
+                    asiakas.ContactTitle = cust.ContactTitle;
+                    asiakas.Address = cust.Address;
+                    asiakas.City = cust.City;
+                    asiakas.Region = cust.Region;
+                    asiakas.PostalCode = cust.PostalCode;
+                    asiakas.Country = cust.Country;
+                    asiakas.Phone = cust.Phone;
+                    asiakas.Fax = cust.Fax;
+
+                    db.SaveChanges();
+                    return Ok($"Asiakas {asiakas.CompanyName} id:lla {id} päivitetty");
+                }
+                else
+                {
+                    return NotFound($"Asiakasta id:lla {id} ei loydy");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Tapahtui virhe. Lue lisää: " + ex.InnerException);
+            }
+        }
+
+        // Poistaa asiakkaan ID:n perusteella
         [HttpDelete]
         [Route("{id}")]
         public ActionResult DeleteCustomer(string id)
