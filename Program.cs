@@ -10,12 +10,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Dependency Injektiolla välitetty tietokantatieto kontrollereille
+// Dependency Injektiolla vï¿½litetty tietokantatieto kontrollereille
 builder.Services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-// ---------- CORS määritys ----------
+// ---------- CORS mï¿½ï¿½ritys ----------
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// ----- CORS käyttö ---------
+// ----- CORS kï¿½yttï¿½ ---------
 app.UseCors("AllowAll");
 
 app.UseAuthorization();

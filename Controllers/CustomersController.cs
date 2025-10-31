@@ -68,7 +68,7 @@ namespace NWRestfulAPI.Controllers
                 db.Customers.Add(cust);
                 db.SaveChanges();
                 //return Created("Customer added: ", cust);
-                return Ok($"Added new customer {cust.CompanyName} from {cust.City}");
+                return Created($"/api/customers/{cust.CustomerId}", cust); ;
             }
             catch (Exception ex)
             {
@@ -82,7 +82,8 @@ namespace NWRestfulAPI.Controllers
         [Route("company/{search}")]
         public ActionResult GetCustomerByName(string search)
         {
-            try {
+            try
+            {
                 var customers = db.Customers
                 .Where(c => c.CompanyName.Contains(search))
                 .ToList(); // <--- nimen osalla haku
@@ -101,7 +102,7 @@ namespace NWRestfulAPI.Controllers
             {
                 return BadRequest("Tapahtui virhe. Lue lisää: " + ex.InnerException);
             }
-            
+
         }
 
         // Päivittää asiakkaan tiedot ID:n perusteella
@@ -121,16 +122,17 @@ namespace NWRestfulAPI.Controllers
                 if (asiakas != null) // jos id:lla löytyy asiakas
                 {
                     // päivitetään tiedot
-                    asiakas.CompanyName = cust.CompanyName;
-                    asiakas.ContactName = cust.ContactName;
-                    asiakas.ContactTitle = cust.ContactTitle;
-                    asiakas.Address = cust.Address;
-                    asiakas.City = cust.City;
-                    asiakas.Region = cust.Region;
-                    asiakas.PostalCode = cust.PostalCode;
-                    asiakas.Country = cust.Country;
-                    asiakas.Phone = cust.Phone;
-                    asiakas.Fax = cust.Fax;
+                    // asiakas.CompanyName = cust.CompanyName;
+                    // asiakas.ContactName = cust.ContactName;
+                    // asiakas.ContactTitle = cust.ContactTitle;
+                    // asiakas.Address = cust.Address;
+                    // asiakas.City = cust.City;
+                    // asiakas.Region = cust.Region;
+                    // asiakas.PostalCode = cust.PostalCode;
+                    // asiakas.Country = cust.Country;
+                    // asiakas.Phone = cust.Phone;
+                    // asiakas.Fax = cust.Fax;
+                    db.Entry(asiakas).CurrentValues.SetValues(cust);
 
                     db.SaveChanges();
                     return Ok($"Asiakas {asiakas.CompanyName} id:lla {id} päivitetty");
