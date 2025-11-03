@@ -81,7 +81,6 @@ public partial class NorthwindContext : DbContext
         {
             return;
         }
-        //=> optionsBuilder.UseSqlServer("Server=tcp:andysrv.database.windows.net,1433;Database=Northwind;User ID=adminandy;Password=Careeria2025;Encrypt=True;TrustServerCertificate=True;");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
