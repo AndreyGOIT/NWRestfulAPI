@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using NWRestfulAPI.Services.Interfaces;
+using System.Security.Cryptography;
 
 namespace NWRestfulAPI.Services
 
@@ -27,12 +28,16 @@ namespace NWRestfulAPI.Services
         //Metodin paluutyyppi on LoggedUser luokan mukainen olio
         public LoggedUser? Authenticate(string username, string password)
         {
+            // Хэшируем входной пароль тем же способом, что и на фронтенде (SHA256 в HEX)
+            using var sha256 = SHA256.Create();
+            var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            var hashedPassword = BitConverter.ToString(bytes).Replace("-", "").ToLower();
 
-            var foundUser = db.Users.SingleOrDefault(x => x.Username == username && x.Password == password);
+            var foundUser = db.Users.SingleOrDefault(x => x.Username == username && x.Password == hashedPassword);
 
-            // Jos ei käyttäjää löydy palautetaan null
             if (foundUser == null)
             {
+                Console.WriteLine($"Login failed for {username} — hash mismatch");
                 return null;
             }
 
