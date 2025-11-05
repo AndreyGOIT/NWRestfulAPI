@@ -1,0 +1,5 @@
+{
+  "appService.preDeployTask": "publish-release",
+  "appService.deploySubpath": "bin/Release/net8.0/publish",
+  "appService.defaultWebAppToDeploy": "/subscriptions/43392f21-07a5-4ad0-9a6c-8f97ab1baea4/resourceGroups/nwbackendandy_group/providers/Microsoft.Web/sites/nwbackendandy"
+}

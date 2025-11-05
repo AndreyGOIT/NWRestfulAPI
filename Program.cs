@@ -9,18 +9,18 @@ using NWRestfulAPI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Dependency Injektiolla v�litetty tietokantatieto kontrollereille
+// Dependency Injektiolla välitetty tietokantatieto kontrollereille
 builder.Services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-// ---------- CORS m��ritys ----------
+// ---------- CORS määritys ----------
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
@@ -39,7 +39,7 @@ if (string.IsNullOrEmpty(jwtKey))
     throw new InvalidOperationException("JWT secret is missing in configuration!");
 }
 
-// Регистрируем AppSettings, чтобы IOptions<AppSettings> работал
+// register AppSettings so that IOptions<AppSettings> works
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -60,15 +60,18 @@ builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// ✅ Включаем Swagger **всегда** (и в Dev, и в Prod)
+app.UseSwagger();
+app.UseSwaggerUI();
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
 
 app.UseHttpsRedirection();
 
-// ----- CORS k�ytt� ---------
+// ----- CORS käyttö ---------
 app.UseCors("AllowAll");
 
 // ----- JWT Authentication -----
